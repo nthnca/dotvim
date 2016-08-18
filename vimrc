@@ -1,70 +1,60 @@
 " vim: set ft=vim:
 
-" I want to use vim, not vi.
+" I want to use vim, not vi
 set nocompatible
 
-syntax on
-"set mouse=a
-set notitle
-
-
-" Dealing with spaces vs tabs.
-"""" May want to try :retab ???
-set expandtab      "inserts spaces not tabs, use CTRL-V<Tab> for real tab.
-set softtabstop=2  "number of spaces to use for tab,
-                   "also pretends like tabs are being used when <BS> is used.
-set autoindent     "copy indent from previous line. cindent overrides this.
-set shiftwidth=2   "number of spaces to use for autoindentation
-set backspace=2    ""help 'backspace'"
-
-set history=100
-set viminfo='20,<50  "save state in ~/.viminfo. help viminfo
-" I should learn more about jumplist, changelist
-" buffers
-" input-line history
-" file marks
-
-" Miscellaneous other stuff.
-set laststatus=2     "always want a status line.
-"set backup           "don't really care about this, but why not..
-set textwidth=79     "80 is just overkill.
-set visualbell t_vb= "just flash the screen
-set showmatch        "match brackets when inserting
-set scrolloff=3  "keep some lines visible when scrolling to top or bottom
-set autowrite    "automatically write the file out when following tags, etc.
-set formatoptions=tcq2r  "for more information use :help fo-table
-set ruler
-set noswapfile
-
-" Definately want modeline turned on.
+" Turn modeline on, maybe a security risk
 set modeline
 set modelines=3
 
-set expandtab
-set shiftwidth=2
+" Formatting - Spaces vs tabs, backspaces, and encoding
+" May want to try :retab ???
+set expandtab      " Inserts spaces not tabs, use CTRL-V<Tab> for real tab
+set tabstop=8      " Make real tabs massive, so it's clear when they are there
+set shiftwidth=2   " Number of spaces to use for autoindentation
 set softtabstop=2
+set autoindent     " Copy indent from current line
+set backspace=indent,eol,start  " :help 'backspace'
+set encoding=utf-8
+set textwidth=79   " Wrap at 79 - 80 is just overkill
+set formatoptions=tcq2r  " For more information use :help fo-table
 
-set hlsearch
-
-" Bash style completion for filenames.
+" Bash style completion for filenames
+set wildmenu
 set wildmode=longest,list
 set wildignore+=*.o,*~,*.tmp,*.pyc
 
-" Miscellaneous other stuff.
-set laststatus=2     "always want a status line.
+" GUI, drawing of the screen
+set laststatus=2      " Always want a status line
+set scrolloff=3       " Keep lines visible when scrolling to top or bottom
+set visualbell t_vb=  " Just flash the screen
+set showmode
+set showcmd
+set ruler
+set showmatch         " Match brackets when inserting
+set notitle
+set hlsearch
+" set relativenumber
+" set cursorline
 
-set nohid        "google vim rc turns on hidden, turn it back off.
-set autowrite    "automatically write the file out when following tags, etc.
+" Deal with files and buffers
+set autowrite   " Automatically write file out when following tags, etc
+set nohid       " Make sure hidden is turned off
+set noswapfile
+
+" History and state
+set history=100
+set viminfo='20,<50  " Save state in ~/.viminfo. help viminfo
 
 
 " Trying using a comma, or is there a better character?
 let mapleader = ","
 
-" Make it simple to modify and update my vimrc file.
+" Make it simple to modify and update my vimrc file
 nnoremap <leader>ev :split $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 
-" Instead of going to ex mode, Q will format paragraph like gq.
+" Instead of going to ex mode, Q will format paragraph like gq
 nnoremap Q gqap
 vnoremap Q gq
 
@@ -72,17 +62,43 @@ nnoremap <unique> m :cn<CR>
 nnoremap <unique> M :cp<CR>
 nnoremap <unique> <C-n> :tn<CR>
 
-" It is soooo nice not to have to hit shift.
+" It is soooo nice not to have to hit shift
 nnoremap ; :
 
 " Configure a 'Comments' command to import CL code review comments into the
-" quickfix buffer.
+" quickfix buffer
 command! Tags cexpr system('tags')
 
+function! <SID>StripTrailingWhitespaces()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\s\+$//e
+    v/\_s*\S/d
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+
+" Remove ALL autocommands for the current group
+autocmd!
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
+syntax on
+
+
+" LOTS OF RANDOM STUFF, ALL COMMENTED OUT
+
+" I should learn more about jumplist, changelist
+" buffers
+" input-line history
+" file marks
+" set backup           "don't really care about this, but why not
 
 " Probably don't want this now that I am using cindent
 " set smartindent
-" set hidden
 " set nojoinspaces
 " supposedly handy for :make. Still deciding what setting I like here
 " set cmdheight=2 "handy for :make
@@ -100,9 +116,8 @@ command! Tags cexpr system('tags')
 " cd to current file's directory
 " map <Leader>cd :cd %:p:h<CR>
 
-" Reminders....
+" Reminders...
 " Insert mode: I, i, A, O, o
 
-" Re-source the vimrc file you are editing.
+" Re-source the vimrc file you are editing
 " :so %
-
