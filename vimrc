@@ -16,8 +16,6 @@ set softtabstop=2
 set autoindent     " Copy indent from current line
 set backspace=indent,eol,start  " :help 'backspace'
 set encoding=utf-8
-set textwidth=79   " Wrap at 79 - 80 is just overkill
-set formatoptions=tcq2r  " For more information use :help fo-table
 
 " Bash style completion for filenames
 set wildmenu
@@ -31,11 +29,15 @@ set visualbell t_vb=  " Just flash the screen
 set showmode
 set showcmd
 set ruler
-set showmatch         " Match brackets when inserting
 set notitle
-set hlsearch
 " set relativenumber
 " set cursorline
+
+" Configure search
+set ignorecase  " ignorecase and smartcase may be even better
+set gdefault
+set showmatch   " Match brackets when inserting
+set hlsearch
 
 " Deal with files and buffers
 set autowrite   " Automatically write file out when following tags, etc
@@ -46,6 +48,12 @@ set noswapfile
 set history=100
 set viminfo='20,<50  " Save state in ~/.viminfo. help viminfo
 
+" Formatting
+set textwidth=79   " Wrap at 79 - 80 is just overkill
+set formatoptions=tcq2r  " For more information use :help fo-table
+set colorcolumn=80
+set wrap
+
 
 " Trying using a comma, or is there a better character?
 let mapleader = ","
@@ -53,6 +61,22 @@ let mapleader = ","
 " Make it simple to modify and update my vimrc file
 nnoremap <leader>ev :split $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" It is soooo nice not to have to hit shift
+nnoremap ; :
+
+" Awesome esc
+inoremap kj <Esc>
+
+" Force me to stop using those nasty arrow keys
+inoremap <Up> <Nop>
+inoremap <Down> <Nop>
+inoremap <Left> <Nop>
+inoremap <Right> <Nop>
+nnoremap <Up> <Nop>
+nnoremap <Down> <Nop>
+nnoremap <Left> <Nop>
+nnoremap <Right> <Nop>
 
 " Instead of going to ex mode, Q will format paragraph like gq
 nnoremap Q gqap
@@ -62,15 +86,20 @@ nnoremap <unique> m :cn<CR>
 nnoremap <unique> M :cp<CR>
 nnoremap <unique> <C-n> :tn<CR>
 
-" It is soooo nice not to have to hit shift
-nnoremap ; :
+nnoremap / /\v
+vnoremap / /\v
+nnoremap <leader><space> :noh<cr>
+nnoremap <tab> %
+vnoremap <tab> %
+inoremap <esc> <nop>
+
 
 " Configure a 'Comments' command to import CL code review comments into the
 " quickfix buffer
 command! Tags cexpr system('tags')
 
 function! <SID>StripTrailingWhitespaces()
-    " Preparation: save last search, and cursor position.
+    " Preparation: save last search, and cursor position
     let _s=@/
     let l = line(".")
     let c = col(".")
@@ -85,6 +114,7 @@ endfunction
 " Remove ALL autocommands for the current group
 autocmd!
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+autocmd FocusLost,CursorHold,CursorHoldI * :wa
 
 syntax on
 
