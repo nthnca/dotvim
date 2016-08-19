@@ -118,6 +118,7 @@ autocmd FocusLost,CursorHold,CursorHoldI * :wa
 
 syntax on
 
+execute pathogen#infect()
 
 " LOTS OF RANDOM STUFF, ALL COMMENTED OUT
 
