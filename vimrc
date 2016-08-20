@@ -65,7 +65,7 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " It is soooo nice not to have to hit shift
 nnoremap ; :
 
-" Awesome esc
+" Awesome escape
 inoremap kj <Esc>
 
 " Force me to stop using those nasty arrow keys
@@ -77,6 +77,10 @@ nnoremap <Up> <Nop>
 nnoremap <Down> <Nop>
 nnoremap <Left> <Nop>
 nnoremap <Right> <Nop>
+
+" Switch which window has focus and window order
+nnoremap <C-W> <C-W><C-W>
+nnoremap <leader>r <C-W><C-R>
 
 " Instead of going to ex mode, Q will format paragraph like gq
 nnoremap Q gqap
