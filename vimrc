@@ -118,6 +118,10 @@ autocmd FocusLost,CursorHold,CursorHoldI * :wa
 
 syntax on
 
+
+" CtrlP setting: Always use CWD
+let g:ctrlp_working_path_mode = 'w'
+
 execute pathogen#infect()
 
 " LOTS OF RANDOM STUFF, ALL COMMENTED OUT
