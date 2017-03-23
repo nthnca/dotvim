@@ -20,7 +20,7 @@ set encoding=utf-8
 " Bash style completion for filenames
 set wildmenu
 set wildmode=longest,list
-set wildignore+=*.o,*~,*.tmp,*.pyc
+set wildignore+=*.o,*~,*.tmp,*.pyc,*.pb.*
 
 " GUI, drawing of the screen
 set laststatus=2      " Always want a status line
@@ -122,6 +122,8 @@ autocmd FocusLost,CursorHold,CursorHoldI * :wa
 
 syntax on
 
+" Settings for vim-go
+let g:go_fmt_command = "goimports"
 
 " CtrlP setting: Always use CWD
 let g:ctrlp_working_path_mode = 'w'
