@@ -54,6 +54,7 @@ set formatoptions=tcq2r  " For more information use :help fo-table
 set colorcolumn=80
 set wrap
 
+hi Search ctermbg=white ctermfg=black
 
 " Trying using a comma, or is there a better character?
 let mapleader = ","
