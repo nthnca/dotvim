@@ -49,9 +49,9 @@ set history=100
 set viminfo='20,<50  " Save state in ~/.viminfo. help viminfo
 
 " Formatting
-set textwidth=79   " Wrap at 79 - 80 is just overkill
+set textwidth=89   " Wrap at 79 - 80 is just overkill
 set formatoptions=tcq2r  " For more information use :help fo-table
-set colorcolumn=80
+set colorcolumn=90
 set wrap
 
 hi Search ctermbg=white ctermfg=black
