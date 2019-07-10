@@ -7,6 +7,9 @@ set nocompatible
 set modeline
 set modelines=3
 
+" I don't think I like this...
+set autochdir
+
 " Formatting - Spaces vs tabs, backspaces, and encoding
 " May want to try :retab ???
 set expandtab      " Inserts spaces not tabs, use CTRL-V<Tab> for real tab
@@ -53,6 +56,8 @@ set textwidth=89   " Wrap at 79 - 80 is just overkill
 set formatoptions=tcq2r  " For more information use :help fo-table
 set colorcolumn=90
 set wrap
+
+set tags=./tags;
 
 hi Search ctermbg=white ctermfg=black
 
