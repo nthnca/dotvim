@@ -7,7 +7,7 @@ set nocompatible
 set modeline
 set modelines=3
 
-" I don't think I like this...
+" This is growing on me...
 set autochdir
 
 " Formatting - Spaces vs tabs, backspaces, and encoding
@@ -37,10 +37,11 @@ set notitle
 " set cursorline
 
 " Configure search
-set ignorecase  " ignorecase and smartcase may be even better
+" set ignorecase  " ignorecase and smartcase may be even better
 set gdefault
-set showmatch   " Match brackets when inserting
+" set showmatch   " Match brackets when inserting
 set hlsearch
+set incsearch
 
 " Deal with files and buffers
 set autowrite   " Automatically write file out when following tags, etc
@@ -87,6 +88,7 @@ nnoremap <Right> <Nop>
 " Switch which window has focus and window order
 nnoremap <C-W> <C-W><C-W>
 nnoremap <leader>r <C-W><C-R>
+nnoremap <leader>t f)T(vt)<C-]>
 
 " Instead of going to ex mode, Q will format paragraph like gq
 nnoremap Q gqap
@@ -124,7 +126,21 @@ endfunction
 " Remove ALL autocommands for the current group
 autocmd!
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+" autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 autocmd FocusLost,CursorHold,CursorHoldI * :wa
+
+function! <SID>FormatOnSaveCpp()
+    " Preparation: save last search, and cursor position
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    silent %!clang-format --style=llvm
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+autocmd BufWritePre *.h,*.cc,*.cpp call <SID>FormatOnSaveCpp()
 
 syntax on
 
