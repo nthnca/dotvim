@@ -56,7 +56,9 @@ set viminfo='20,<50  " Save state in ~/.viminfo. help viminfo
 set textwidth=89   " Wrap at 79 - 80 is just overkill
 set formatoptions=tcq2r  " For more information use :help fo-table
 set colorcolumn=90
-set wrap
+set wrap            " Long lines will be 'virtually' wrapped on screen.
+                    " Use g{hjkl} to move around these virually wrapped lines.
+set nowrapscan      " A search will stop when it hits the top or bottom of file.
 
 set tags=./tags;
 
@@ -105,10 +107,12 @@ nnoremap <tab> %
 vnoremap <tab> %
 inoremap <esc> <nop>
 
-
 " Configure a 'Comments' command to import CL code review comments into the
 " quickfix buffer
 command! Tags cexpr system('tags')
+
+
+" Various formatting function to be run prior to saving a file.
 
 function! <SID>StripTrailingWhitespaces()
     " Preparation: save last search, and cursor position
@@ -123,11 +127,17 @@ function! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfunction
 
-" Remove ALL autocommands for the current group
-autocmd!
-autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
-" autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
-autocmd FocusLost,CursorHold,CursorHoldI * :wa
+function! <SID>FormatOnSavePy()
+    " Preparation: save last search, and cursor position
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    silent %!yapf
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
 
 function! <SID>FormatOnSaveCpp()
     " Preparation: save last search, and cursor position
@@ -140,17 +150,42 @@ function! <SID>FormatOnSaveCpp()
     let @/=_s
     call cursor(l, c)
 endfunction
+
+function! <SID>FormatOnSaveRust()
+    " Preparation: save last search, and cursor position
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    silent %!rustfmt --emit stdout
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+
+function! <SID>FormatOnSaveGo()
+    " Preparation: save last search, and cursor position
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    silent %!goimports
+    silent %!gofmt -s
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+
+" Remove ALL autocommands for the current group
+autocmd!
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 autocmd BufWritePre *.h,*.cc,*.cpp call <SID>FormatOnSaveCpp()
+autocmd BufWritePre *.rs call <SID>FormatOnSaveRust()
+autocmd BufWritePre *.py call <SID>FormatOnSavePy()
+autocmd BufWritePre *.go call <SID>FormatOnSaveGo()
+autocmd FocusLost,CursorHold,CursorHoldI * :wa
 
 syntax on
-
-" Settings for vim-go
-let g:go_fmt_command = "goimports"
-
-" CtrlP setting: Always use CWD
-let g:ctrlp_working_path_mode = 'w'
-
-execute pathogen#infect()
 
 " LOTS OF RANDOM STUFF, ALL COMMENTED OUT
 
