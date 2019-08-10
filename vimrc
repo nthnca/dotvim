@@ -1,10 +1,12 @@
 " vim: set ft=vim:
 
-" I want to use vim, not vi
+" I want to use vim, not vi.
 set nocompatible
+
+" Simple black and shades of white theme.
 colorscheme boring
 
-" Turn modeline on, maybe a security risk
+" Turn modeline on, maybe a security risk.
 set modeline
 set modelines=3
 
