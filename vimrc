@@ -2,13 +2,14 @@
 
 " I want to use vim, not vi
 set nocompatible
+colorscheme boring
 
 " Turn modeline on, maybe a security risk
 set modeline
 set modelines=3
 
 " This is growing on me...
-set autochdir
+" set autochdir
 
 " Formatting - Spaces vs tabs, backspaces, and encoding
 " May want to try :retab ???
