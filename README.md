@@ -1,6 +1,8 @@
 # dotvim
 
-My VIM configuration.
+DEPRECATED: See [config](https://github.com/nthnca/config)
+
+My VIM configuration. 
 
 ## Install
 
